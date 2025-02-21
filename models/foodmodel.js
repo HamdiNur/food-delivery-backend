@@ -7,5 +7,6 @@ const foodSchema=new mongoose.Schema({
     image:{type:String,required:true},
     category:{type:String,required:true}
 })
-const foodModal= mongoose.models.food || mongoose.model('food',foodSchema)
+const foodModal= mongoose.models.food || mongoose.model('food',foodSchema);
+
 export default foodModal;
