@@ -2,10 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 import foodRouter from './routes/foodRoute.js';
+import userRouter from './routes/userRoute.js';
 
-
+import 'dotenv/config'
 
 //app config
+
 const app=express()
 const port=4000
 
@@ -18,6 +20,7 @@ connectDB();
 
 //api endpointsapp
 app.use("/api/food",foodRouter);
+app.use("/api/user",userRouter)
 app.use("/images",express.static('uploads'))
 
 app.get("/",(req,res)=>{
@@ -29,3 +32,4 @@ app.listen(port,()=>{
 })
 
 //mongodb+srv://greateStack:dKJvb2zYWE4QTWY8@cluster0.jjdca.mongodb.net/?
+// mongodb+srv://greateStack:24067788@cluster0.vwo0yjo.mongodb.net/?
