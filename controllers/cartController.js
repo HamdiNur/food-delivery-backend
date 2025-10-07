@@ -2,33 +2,31 @@ import userModel from "../models/userModel.js";
 
 //Add items to user Cart
 
+// ✅ Add to Cart
 const addToCart = async (req, res) => {
   try {
-    const { userId, itemId } = req.body;
+    const userId = req.userId; // get from middleware
+    const { itemId } = req.body;
 
-    // Make sure both values exist
     if (!userId || !itemId) {
-      return res.status(400).json({ success: false, message: "Missing userId or itemId" });
+      return res.json({ success: false, message: "Missing userId or itemId" });
     }
 
     const userData = await userModel.findById(userId);
-
-    if (!userData) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    // If cartData doesn’t exist yet, initialise it
     const cartData = userData.cartData || {};
 
-    // Add or increment item count
-    cartData[itemId] = (cartData[itemId] || 0) + 1;
+    // ✅ Fix the logic
+    if (cartData[itemId]) {
+      cartData[itemId] += 1; // increase count
+    } else {
+      cartData[itemId] = 1; // first time
+    }
 
     await userModel.findByIdAndUpdate(userId, { cartData });
-
-    return res.json({ success: true, message: "Added to Cart" });
+    res.json({ success: true, message: "Added to cart" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, message: "Error adding to cart" });
+    res.json({ success: false, message: "Error adding to cart" });
   }
 };
 
@@ -37,8 +35,8 @@ const addToCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
   try {
-    const { userId, itemId } = req.body;
-
+  const userId = req.userId;           // ✅ not from req.body
+    const { itemId } = req.body;
     if (!userId || !itemId) {
       return res.status(400).json({ success: false, message: "Missing userId or itemId" });
     }
@@ -76,7 +74,7 @@ const removeFromCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const { userId } = req.body;
+const userId = req.userId;
 
     if (!userId) {
       return res.status(400).json({ success: false, message: "Missing userId" });
