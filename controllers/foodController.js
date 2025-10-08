@@ -70,4 +70,14 @@ const removeFood = async (req, res) => {
 };
 
 
-export {addFood,listFood,removeFood}
+
+///api for updating order status
+
+const updateStatus=async (req,res)=>{
+
+}
+
+
+
+
+export {addFood,listFood,removeFood,}

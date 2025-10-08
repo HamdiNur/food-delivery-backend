@@ -1,17 +1,15 @@
 import { response } from "express";
 import jwt from "jsonwebtoken"
-const authMiddleware = async (req, res, next) => {
+const authMiddleware = (req, res, next) => {
   const { token } = req.headers;
-  if (!token) {
-    return res.json({ success: false, message: "Not Authorized Login Again" });
-  }
+  if (!token) return res.json({ success: false, message: "Not Authorized" });
+
   try {
-    const token_decode = jwt.verify(token, process.env.JWT_SECRET); // also fix var name
-    req.body.userId = token_decode.id;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.id;  // ✅ attach properly
     next();
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+  } catch (err) {
+    res.json({ success: false, message: "Invalid token" });
   }
 };
 
