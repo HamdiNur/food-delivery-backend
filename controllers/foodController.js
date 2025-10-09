@@ -71,12 +71,6 @@ const removeFood = async (req, res) => {
 
 
 
-///api for updating order status
-
-const updateStatus=async (req,res)=>{
-
-}
-
 
 
 
